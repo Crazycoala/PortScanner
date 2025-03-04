@@ -10,11 +10,20 @@ class Program
         Console.Write("Введите IP-адрес (например, 127.0.0.1): ");
         string ip = Console.ReadLine();
 
+
         Console.Write("Введите начальный порт: ");
-        int startPort = int.Parse(Console.ReadLine());
+        if (!int.TryParse(Console.ReadLine(), out int startPort) || startPort < 1 || startPort > 65535)
+        {
+            Console.WriteLine("Ошибка: введите число от 1 до 65535!");
+            return;
+        }
 
         Console.Write("Введите конечный порт: ");
-        int endPort = int.Parse(Console.ReadLine());
+        if (!int.TryParse(Console.ReadLine(), out int endPort) || endPort < startPort || endPort > 65535)
+        {
+            Console.WriteLine("Ошибка: введите число от " + startPort + " до 65535!");
+            return;
+        }
 
         Console.WriteLine($"Сканирование {ip} с порта {startPort} до {endPort}....");
         ScanPorts(ip, startPort, endPort).Wait(); // Ждем завершения сканирования
